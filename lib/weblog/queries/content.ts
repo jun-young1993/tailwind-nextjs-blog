@@ -6,3 +6,27 @@ export const getRepositoryContent = `
     }
   }
 `
+
+export const getLatestCommits = `
+    query GetCommits($repository: String!, $path: String!) {
+        getCommits(repository: $repository, path: $path) {
+            sha
+            commit {
+                committer {
+                    name
+                    date
+                    email
+                }
+            }
+            detail {
+                files {
+                    sha
+                    filename
+                    status
+                    content
+                }
+            }
+        }
+    }
+    
+`
