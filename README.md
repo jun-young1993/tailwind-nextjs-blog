@@ -1,3 +1,5 @@
+https://reactnext-central.xyz/blog/nextjs/mdx
+
 ![tailwind-nextjs-banner](/public/static/images/twitter-card.png)
 
 # Tailwind Nextjs Starter Blog

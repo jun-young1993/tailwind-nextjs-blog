@@ -1,8 +1,13 @@
+
+
 const { withContentlayer } = require('next-contentlayer2')
+
+
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+
 
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
@@ -68,6 +73,7 @@ module.exports = () => {
     basePath,
     reactStrictMode: true,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+    transpilePackages: ['next-mdx-remote'],
     eslint: {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },

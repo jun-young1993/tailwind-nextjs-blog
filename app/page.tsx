@@ -5,5 +5,5 @@ import { getCommits } from 'lib/weblog'
 
 export default async function Page() {
   const commits = await getCommits()
-  return <Main posts={commits} />
+  return <Main commits={commits} />
 }

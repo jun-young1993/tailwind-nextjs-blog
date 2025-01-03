@@ -3,6 +3,8 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import base64Encode from 'utils/base64encode'
 
 const MAX_DISPLAY = 5
 
@@ -20,10 +22,11 @@ export default function Home({ commits }) {
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!commits?.length && 'No posts found.'}
-          {(commits || []).slice(0, MAX_DISPLAY).map((commit) => {
+          {(commits || []).slice(0, MAX_DISPLAY).map(({commit, detail}) => {
             const committer = commit.committer;
             const { date } = committer
-            commit.detail.files.map((file) => {
+            
+            return detail.files.map((file) => {
               const { sha, filename, content } = file
               const tags = ['test']
               const title = filename.split('/')[filename.split('/').length-1]
@@ -54,8 +57,8 @@ export default function Home({ commits }) {
                               ))}
                             </div>
                           </div>
-                          <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                            {content}
+                          <div className="prose max-w-none text-gray-500 dark:text-gray-400 overflow-hidden line-clamp-3">
+                            <MDXRemote source={base64Encode(content)} />
                           </div>
                         </div>
                         <div className="text-base font-medium leading-6">
