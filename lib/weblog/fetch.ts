@@ -1,17 +1,14 @@
 import { ApolloClient } from "@apollo/client"
-import { getLatestCommits, getRepositoryContent } from "./queries/content"
+import {getLatestCommits, getPostQuery, getRepositoryContent} from "./queries/content"
 import { isWeblogError } from "./type-guards"
-import { WeblogCommit, WebLogCommitOperation, WeblogFiles } from "./types"
+import {WebLogCommitOperation, WeblogFiles, WeblogPost, WebLogPostOperation} from "./types"
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
 const endpoint = 'http://localhost:3000/graphql/github'
 const repository = 'Obsidian'
 const path = 'blog'
-const GlobVariables = {
-    repository,
-    path
-}
+
 
 export async function weblogFetch<T>({
   cache = 'force-cache',
@@ -36,7 +33,6 @@ export async function weblogFetch<T>({
         body: JSON.stringify({
           ...(query && { query }),
           variables: {
-            ...GlobVariables,
             ...(variables && variables)
           }
         }),
@@ -66,20 +62,12 @@ export async function weblogFetch<T>({
   }
 }
 
-export async function getContents(): Promise<WeblogFiles[]> {
-    const response = await weblogFetch<WeblogFiles[]>({
-        query: getRepositoryContent,
+
+export async function getPosts(variables: WebLogPostOperation['variables']): Promise<WeblogPost[]> {
+    const response = await weblogFetch<WebLogPostOperation>({
+        query: getPostQuery,
         cache: 'no-store',
+        variables: variables
     })
-
-    return response.body
-}
-
-export async function getCommits(): Promise<WebLogCommitOperation> {
-    const response = await weblogFetch<WebLogCommitOperation>({
-        query: getLatestCommits,
-        cache: 'no-store',
-    })
-
-    return response.body.data.getCommits
+    return response.body.data.getPost
 }

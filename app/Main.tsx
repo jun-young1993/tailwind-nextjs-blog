@@ -8,7 +8,7 @@ import base64Encode from 'utils/base64encode'
 
 const MAX_DISPLAY = 5
 
-export default function Home({ commits }) {
+export default function Home({ posts }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -21,23 +21,17 @@ export default function Home({ commits }) {
           </p>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!commits?.length && 'No posts found.'}
-          {(commits || []).slice(0, MAX_DISPLAY).map(({commit, detail}) => {
-            const committer = commit.committer;
-            const { date } = committer
-            
-            return detail.files.map((file) => {
-              const { sha, filename, content } = file
-              const tags = ['test']
-              const title = filename.split('/')[filename.split('/').length-1]
-              return (
+          {!posts?.length && 'No posts found.'}
+          {posts?.map(({sha, filename, content, updatedAt}) => {
+            const tags = ['default']
+            return (
                 <li key={sha} className="py-12">
                   <article>
                     <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                       <dl>
                         <dt className="sr-only">Published on</dt>
                         <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                          <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                          <time dateTime={updatedAt}>{formatDate(updatedAt, siteMetadata.locale)}</time>
                         </dd>
                       </dl>
                       <div className="space-y-5 xl:col-span-3">
@@ -45,27 +39,27 @@ export default function Home({ commits }) {
                           <div>
                             <h2 className="text-2xl font-bold leading-8 tracking-tight">
                               <Link
-                                href={`/blog/${filename}`}
-                                className="text-gray-900 dark:text-gray-100"
+                                  href={`/blog/${sha}`}
+                                  className="text-gray-900 dark:text-gray-100"
                               >
-                                {title}
+                                {filename}
                               </Link>
                             </h2>
                             <div className="flex flex-wrap">
                               {tags.map((tag) => (
-                                <Tag key={tag} text={tag} />
+                                  <Tag key={tag} text={tag} />
                               ))}
                             </div>
                           </div>
                           <div className="prose max-w-none text-gray-500 dark:text-gray-400 overflow-hidden line-clamp-3">
-                            <MDXRemote source={base64Encode(content)} />
+                            <MDXRemote source={content} />
                           </div>
                         </div>
                         <div className="text-base font-medium leading-6">
                           <Link
-                            href={`/blog/${filename}`}
-                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            aria-label={`Read more: "${title}"`}
+                              href={`/blog/${sha}`}
+                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              aria-label={`Read more: "${filename}"`}
                           >
                             Read more &rarr;
                           </Link>
@@ -74,13 +68,12 @@ export default function Home({ commits }) {
                     </div>
                   </article>
                 </li>
-              )
-            })
+            )
 
           })}
         </ul>
       </div>
-      {commits?.length > MAX_DISPLAY && (
+
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
             href="/blog"
@@ -90,7 +83,7 @@ export default function Home({ commits }) {
             All Posts &rarr;
           </Link>
         </div>
-      )}
+
       {siteMetadata.newsletter?.provider && (
         <div className="flex items-center justify-center pt-4">
           <NewsletterForm />

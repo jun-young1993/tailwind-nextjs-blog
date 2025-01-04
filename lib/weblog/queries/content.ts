@@ -6,6 +6,16 @@ export const getRepositoryContent = `
     }
   }
 `
+export const getPostQuery = `
+    query GetPost($limit: Float) {
+        getPost(limit: $limit) {
+             sha
+            filename
+            content
+            updatedAt
+        }
+    }
+`
 
 export const getLatestCommits = `
     query GetCommits($repository: String!, $path: String!) {
