@@ -4,9 +4,6 @@ import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import base64Encode from 'utils/base64encode'
-
-const MAX_DISPLAY = 5
 
 export default function Home({ posts }) {
   return (

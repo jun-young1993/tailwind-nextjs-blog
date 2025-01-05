@@ -27,9 +27,16 @@ export type WeblogPost = {
     updatedAt: string
 }
 
-export type WebLogPostOperation = {
-    data: { getPost: WeblogPost[] }
+export type WebLogPostsOperation = {
+    data: { getPosts: WeblogPost[] }
     variables: {
         limit?: number
+    }
+}
+
+export type WebLogPostOperation = {
+    data: { getPost: WeblogPost }
+    variables: {
+        id: string
     }
 }

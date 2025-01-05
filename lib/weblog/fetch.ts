@@ -1,7 +1,7 @@
 import { ApolloClient } from "@apollo/client"
-import {getLatestCommits, getPostQuery, getRepositoryContent} from "./queries/content"
+import {getLatestCommits, getPostQuery, getPostsQuery, getRepositoryContent} from "./queries/content"
 import { isWeblogError } from "./type-guards"
-import {WebLogCommitOperation, WeblogFiles, WeblogPost, WebLogPostOperation} from "./types"
+import {WebLogCommitOperation, WeblogFiles, WeblogPost, WebLogPostOperation, WebLogPostsOperation} from "./types"
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
@@ -63,7 +63,16 @@ export async function weblogFetch<T>({
 }
 
 
-export async function getPosts(variables: WebLogPostOperation['variables']): Promise<WeblogPost[]> {
+export async function getPosts(variables: WebLogPostsOperation['variables']): Promise<WeblogPost[]> {
+    const response = await weblogFetch<WebLogPostsOperation>({
+        query: getPostsQuery,
+        cache: 'no-store',
+        variables: variables
+    })
+    return response.body.data.getPosts
+}
+
+export async function getPost(variables: WebLogPostOperation['variables']): Promise<WeblogPost> {
     const response = await weblogFetch<WebLogPostOperation>({
         query: getPostQuery,
         cache: 'no-store',
@@ -71,3 +80,4 @@ export async function getPosts(variables: WebLogPostOperation['variables']): Pro
     })
     return response.body.data.getPost
 }
+

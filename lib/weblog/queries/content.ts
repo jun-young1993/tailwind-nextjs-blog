@@ -6,10 +6,21 @@ export const getRepositoryContent = `
     }
   }
 `
-export const getPostQuery = `
-    query GetPost($limit: Float) {
-        getPost(limit: $limit) {
+export const getPostsQuery = `
+    query GetPosts($limit: Float) {
+        getPosts(limit: $limit) {
              sha
+            filename
+            content
+            updatedAt
+        }
+    }
+`
+
+export const getPostQuery = `
+    query GetPost($id: String!) {
+        getPost(id: $id) {
+            sha
             filename
             content
             updatedAt
