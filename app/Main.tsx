@@ -4,8 +4,9 @@ import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import {WeblogPost} from "../lib/weblog/types";
 
-export default function Home({ posts }) {
+export default function Home({ posts }: {posts: WeblogPost[]}) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">

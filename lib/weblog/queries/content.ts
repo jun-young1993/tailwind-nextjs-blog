@@ -7,12 +7,20 @@ export const getRepositoryContent = `
   }
 `
 export const getPostsQuery = `
-    query GetPosts($limit: Float) {
-        getPosts(limit: $limit) {
-             sha
-            filename
-            content
-            updatedAt
+    query GetPosts($limit: Float, $page: Float) {
+        getPosts(limit: $limit, page: $page) {
+            pagination {       # 페이징 정보
+                total          # 총 데이터 개수
+                page           # 현재 페이지 번호
+                limit          # 페이지 크기
+                totalPages     # 총 페이지 수
+            }
+            data {             # 데이터 배열
+                sha
+                filename
+                content
+                updatedAt
+            }
         }
     }
 `

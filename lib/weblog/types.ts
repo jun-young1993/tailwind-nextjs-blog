@@ -26,11 +26,23 @@ export type WeblogPost = {
     createdAt: string
     updatedAt: string
 }
-
+export type PaginationInfo = {
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+}
+export type WeblogPosts = {
+    data: WeblogPost[],
+    pagination: PaginationInfo
+}
 export type WebLogPostsOperation = {
-    data: { getPosts: WeblogPost[] }
+    data: {
+        getPosts: WeblogPosts
+    }
     variables: {
         limit?: number
+        page?: number
     }
 }
 

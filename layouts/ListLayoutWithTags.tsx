@@ -9,16 +9,17 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
+import {WeblogPosts} from "../lib/weblog/types";
+import {MDXRemote} from "next-mdx-remote/rsc";
 
 interface PaginationProps {
   totalPages: number
   currentPage: number
 }
 interface ListLayoutProps {
-  posts: CoreContent<Blog>[]
+  posts: WeblogPosts['data']
   title: string
-  initialDisplayPosts?: CoreContent<Blog>[]
-  pagination?: PaginationProps
+  pagination?: WeblogPosts['pagination']
 }
 
 function Pagination({ totalPages, currentPage }: PaginationProps) {
@@ -64,15 +65,12 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 export default function ListLayoutWithTags({
   posts,
   title,
-  initialDisplayPosts = [],
   pagination,
 }: ListLayoutProps) {
   const pathname = usePathname()
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
-
-  const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
   return (
     <>
@@ -120,32 +118,32 @@ export default function ListLayoutWithTags({
           </div>
           <div>
             <ul>
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags } = post
+              {posts?.map(({sha, filename, content, updatedAt}) => {
+                const tags = ['default']
                 return (
-                  <li key={path} className="py-5">
+                  <li key={sha} className="py-5">
                     <article className="flex flex-col space-y-2 xl:space-y-0">
                       <dl>
                         <dt className="sr-only">Published on</dt>
                         <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                          <time dateTime={date} suppressHydrationWarning>
-                            {formatDate(date, siteMetadata.locale)}
+                          <time dateTime={updatedAt} suppressHydrationWarning>
+                            {formatDate(updatedAt, siteMetadata.locale)}
                           </time>
                         </dd>
                       </dl>
                       <div className="space-y-3">
                         <div>
                           <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                            <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
-                              {title}
+                            <Link href={`/blog/${sha}`} className="text-gray-900 dark:text-gray-100">
+                              {filename}
                             </Link>
                           </h2>
                           <div className="flex flex-wrap">
                             {tags?.map((tag) => <Tag key={tag} text={tag} />)}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
+                        <div className="prose max-w-none text-gray-500 dark:text-gray-400 line-clamp-3">
+                          <MDXRemote source={content} />
                         </div>
                       </div>
                     </article>
