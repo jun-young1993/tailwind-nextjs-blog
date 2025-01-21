@@ -7,12 +7,21 @@ export const getRepositoryContent = `
   }
 `
 export const getPostsQuery = `
-    query GetPosts($limit: Float) {
-        getPosts(limit: $limit) {
-             sha
-            filename
-            content
-            updatedAt
+    query GetPosts($page: Float, $limit: Float) {
+        getPosts(page: $page, limit: $limit) {
+            data {
+                id
+                title
+                content
+                createdAt
+                updatedAt
+            }
+            pagination {
+                total
+                page
+                limit
+                totalPages
+            }
         }
     }
 `

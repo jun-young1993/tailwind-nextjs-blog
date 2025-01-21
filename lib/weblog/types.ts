@@ -20,9 +20,9 @@ export type WebLogCommitOperation = {
     data: { getCommits: WeblogCommit[] }
 }
 export type WeblogPost = {
-    sha: string
+    id: string
     content: string
-    filename: string
+    title: string
     createdAt: string
     updatedAt: string
 }

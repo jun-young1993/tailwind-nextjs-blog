@@ -5,7 +5,7 @@ import {WebLogCommitOperation, WeblogFiles, WeblogPost, WebLogPostOperation, Web
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
-const endpoint = 'http://localhost:3000/graphql/github'
+const endpoint = 'http://localhost:3000/graphql/post'
 const repository = 'Obsidian'
 const path = 'blog'
 
@@ -63,12 +63,13 @@ export async function weblogFetch<T>({
 }
 
 
-export async function getPosts(variables: WebLogPostsOperation['variables']): Promise<WeblogPost[]> {
+export async function getPosts(variables: WebLogPostsOperation['variables']): Promise<{data: WeblogPost[]}> {
     const response = await weblogFetch<WebLogPostsOperation>({
         query: getPostsQuery,
         cache: 'no-store',
         variables: variables
     })
+    
     return response.body.data.getPosts
 }
 
