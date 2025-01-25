@@ -1,7 +1,15 @@
 import { ApolloClient } from "@apollo/client"
-import {getLatestCommits, getPostQuery, getPostsQuery, getRepositoryContent} from "./queries/content"
+import {
+    getLatestCommits,
+    getPostQuery,
+    getPostsQuery,
+    getRepositoryContent,
+    getTagsWithPostCountQuery
+} from "./queries/content"
 import { isWeblogError } from "./type-guards"
 import {
+    TagsWithPostCount,
+    TagsWithPostCountOperation,
     WebLogCommitOperation,
     WeblogFiles,
     WeblogPost,
@@ -12,7 +20,7 @@ import {
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
-const endpoint = 'http://localhost:3000/graphql/github'
+const endpoint = 'http://localhost:3000/graphql/post'
 const repository = 'Obsidian'
 const path = 'blog'
 
@@ -87,5 +95,14 @@ export async function getPost(variables: WebLogPostOperation['variables']): Prom
         variables: variables
     })
     return response.body.data.getPost
+}
+
+export async function getTagsWithPostCount(): Promise<TagsWithPostCountOperation['data']['getTagsWithPostCount']> {
+    const response = await weblogFetch<TagsWithPostCountOperation>({
+        query: getTagsWithPostCountQuery,
+        cache: 'no-store',
+    })
+    console.log("=>(fetch.ts:106) response.body", response.body);
+    return response.body.data.getTagsWithPostCount
 }
 

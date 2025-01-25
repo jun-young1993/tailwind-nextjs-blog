@@ -1,3 +1,5 @@
+import {string} from "zod";
+
 export type WeblogFiles = {
     name: string
     path: string
@@ -20,9 +22,9 @@ export type WebLogCommitOperation = {
     data: { getCommits: WeblogCommit[] }
 }
 export type WeblogPost = {
-    sha: string
+    id: string
+    title: string
     content: string
-    filename: string
     createdAt: string
     updatedAt: string
 }
@@ -51,4 +53,16 @@ export type WebLogPostOperation = {
     variables: {
         id: string
     }
+}
+
+export type Tag = {
+    id: string
+    name: string
+    color: string
+}
+export interface TagsWithPostCount extends Tag {
+    postCount: number
+}
+export type TagsWithPostCountOperation = {
+    data: { getTagsWithPostCount: [TagsWithPostCount]},
 }

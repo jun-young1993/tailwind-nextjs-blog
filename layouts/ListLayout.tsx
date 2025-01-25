@@ -106,7 +106,7 @@ export default function ListLayout({
         </div>
         <ul>
           {!posts?.length && 'No posts found.'}
-          {posts?.map(({sha, filename, content, updatedAt}) => {
+          {posts?.map(({sha, title, content, updatedAt}) => {
             const tags = ['default']
             return (
               <li key={sha} className="py-4">
@@ -121,7 +121,7 @@ export default function ListLayout({
                     <div>
                       <h3 className="text-2xl font-bold leading-8 tracking-tight">
                         <Link href={`/blog/${sha}`} className="text-gray-900 dark:text-gray-100">
-                          {filename}
+                          {title}
                         </Link>
                       </h3>
                       <div className="flex flex-wrap">

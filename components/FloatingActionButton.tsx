@@ -1,4 +1,7 @@
-const FloatingActionButton = () => {
+type Props  = {
+    onAdd: (event: MouseEvent) => void
+}
+const FloatingActionButton = ({ onAdd }: Props) => {
     return (
         <div className="group fixed bottom-8 right-8 p-2 flex items-end justify-end w-24 h-24">
             {/* 메인 버튼 */}
@@ -70,6 +73,7 @@ const FloatingActionButton = () => {
             {/* 서브 버튼 3 */}
             <div
                 className="absolute rounded-full transition-all duration-300 ease-out scale-0 peer-checked:scale-100 peer-checked:-translate-y-14 peer-checked:-translate-x-14 flex p-2 hover:p-3 bg-yellow-300 hover:bg-yellow-400 text-white"
+                onClick={onAdd}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

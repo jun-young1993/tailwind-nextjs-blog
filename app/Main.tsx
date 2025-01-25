@@ -20,10 +20,10 @@ export default function Home({ posts }: {posts: WeblogPost[]}) {
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts?.length && 'No posts found.'}
-          {posts?.map(({sha, filename, content, updatedAt}) => {
+          {posts?.map(({id, title, content, updatedAt}) => {
             const tags = ['default']
             return (
-                <li key={sha} className="py-12">
+                <li key={id} className="py-12">
                   <article>
                     <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                       <dl>
@@ -37,10 +37,10 @@ export default function Home({ posts }: {posts: WeblogPost[]}) {
                           <div>
                             <h2 className="text-2xl font-bold leading-8 tracking-tight">
                               <Link
-                                  href={`/blog/${sha}`}
+                                  href={`/blog/${id}`}
                                   className="text-gray-900 dark:text-gray-100"
                               >
-                                {filename}
+                                {title}
                               </Link>
                             </h2>
                             <div className="flex flex-wrap">
@@ -55,9 +55,9 @@ export default function Home({ posts }: {posts: WeblogPost[]}) {
                         </div>
                         <div className="text-base font-medium leading-6">
                           <Link
-                              href={`/blog/${sha}`}
+                              href={`/blog/${id}`}
                               className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                              aria-label={`Read more: "${filename}"`}
+                              aria-label={`Read more: "${title}"`}
                           >
                             Read more &rarr;
                           </Link>

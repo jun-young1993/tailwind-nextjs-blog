@@ -1,8 +1,8 @@
 export const getRepositoryContent = `
   query GetRepositoryContents($repository: String!, $path: String!) {
     getRepositoryContents(repository: $repository, path: $path) {
-      name
-      path
+      title
+      content
     }
   }
 `
@@ -16,9 +16,10 @@ export const getPostsQuery = `
                 totalPages     # 총 페이지 수
             }
             data {             # 데이터 배열
-                sha
-                filename
+                id
+                title
                 content
+                createdAt
                 updatedAt
             }
         }
@@ -28,10 +29,22 @@ export const getPostsQuery = `
 export const getPostQuery = `
     query GetPost($id: String!) {
         getPost(id: $id) {
-            sha
-            filename
+            id
+            title
             content
+            createdAt
             updatedAt
+        }
+    }
+`
+
+export const getTagsWithPostCountQuery = `
+    query {
+          getTagsWithPostCount {
+            id
+            name
+            color
+            postCount
         }
     }
 `

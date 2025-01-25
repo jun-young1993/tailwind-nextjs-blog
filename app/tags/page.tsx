@@ -3,10 +3,13 @@ import Tag from '@/components/Tag'
 import { slug } from 'github-slugger'
 import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
+import {getTagsWithPostCount} from "../../lib/weblog";
 
 export const metadata = genPageMetadata({ title: 'Tags', description: 'Things I blog about' })
 
 export default async function Page() {
+  const tags = await getTagsWithPostCount()
+
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
@@ -20,16 +23,16 @@ export default async function Page() {
         </div>
         <div className="flex max-w-lg flex-wrap">
           {tagKeys.length === 0 && 'No tags found.'}
-          {sortedTags.map((t) => {
+          {tags.map(({id, name, postCount, color}) => {
             return (
-              <div key={t} className="mb-2 mr-5 mt-2">
-                <Tag text={t} />
+              <div key={id} className="mb-2 mr-5 mt-2">
+                <Tag id={id} text={name} color={color}/>
                 <Link
-                  href={`/tags/${slug(t)}`}
+                  href={`/tags/${id}`}
                   className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"
-                  aria-label={`View posts tagged ${t}`}
+                  aria-label={`View posts tagged ${name}`}
                 >
-                  {` (${tagCounts[t]})`}
+                  {` (${postCount})`}
                 </Link>
               </div>
             )

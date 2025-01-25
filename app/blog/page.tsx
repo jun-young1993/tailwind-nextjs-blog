@@ -4,8 +4,6 @@ import { allBlogs } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
 import {getPosts} from "../../lib/weblog";
 
-const POSTS_PER_PAGE = 5
-
 export const metadata = genPageMetadata({ title: 'Blog' })
 
 export default async function BlogPage() {
@@ -13,6 +11,7 @@ export default async function BlogPage() {
     limit: 5,
     page: 1,
   })
+
   return (
       <ListLayout
           posts={posts.data}

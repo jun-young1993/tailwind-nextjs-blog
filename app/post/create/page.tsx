@@ -23,7 +23,11 @@ function HomePage() {
                 onChange={(value) => setTitle(value)}
             />
             <InitializeMDXEditor markdown={markdown}/>
-            <FloatingActionButton />
+            <FloatingActionButton
+                onAdd={() => {
+                    console.log('on add')
+                }}
+            />
         </div>
     );
 }

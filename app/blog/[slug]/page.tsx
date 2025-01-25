@@ -61,16 +61,15 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     id: id
   })
 
-  const content = postData.content
-  const filename = postData.filename
-
   if (!postData) {
     return notFound()
   }
 
+  const { title, content} = postData
+
   return (
       <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-        <div className="text-2xl">{filename}</div>
+        <div className="text-2xl">{title}</div>
         <hr/>
         <MDXRemote source={content} />
       </div>
