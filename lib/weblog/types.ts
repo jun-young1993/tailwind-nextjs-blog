@@ -21,10 +21,16 @@ export type WeblogCommit = {
 export type WebLogCommitOperation = {
     data: { getCommits: WeblogCommit[] }
 }
+export type Tag = {
+    id: string
+    name: string
+    color: string
+}
 export type WeblogPost = {
     id: string
     title: string
     content: string
+    tags: Tag[]
     createdAt: string
     updatedAt: string
 }
@@ -45,6 +51,7 @@ export type WebLogPostsOperation = {
     variables: {
         limit?: number
         page?: number
+        tagId?: string
     }
 }
 
@@ -55,11 +62,7 @@ export type WebLogPostOperation = {
     }
 }
 
-export type Tag = {
-    id: string
-    name: string
-    color: string
-}
+
 export interface TagsWithPostCount extends Tag {
     postCount: number
 }

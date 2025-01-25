@@ -84,7 +84,7 @@ export async function getPosts(variables: WebLogPostsOperation['variables']): Pr
         cache: 'no-store',
         variables: variables
     })
-    console.log("=>(fetch.ts:73) response", response);
+
     return response.body.data.getPosts
 }
 
@@ -102,7 +102,7 @@ export async function getTagsWithPostCount(): Promise<TagsWithPostCountOperation
         query: getTagsWithPostCountQuery,
         cache: 'no-store',
     })
-    console.log("=>(fetch.ts:106) response.body", response.body);
+
     return response.body.data.getTagsWithPostCount
 }
 

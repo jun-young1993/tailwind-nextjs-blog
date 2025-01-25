@@ -20,8 +20,8 @@ export default function Home({ posts }: {posts: WeblogPost[]}) {
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts?.length && 'No posts found.'}
-          {posts?.map(({id, title, content, updatedAt}) => {
-            const tags = ['default']
+          {posts?.map(({id, title, tags, content, updatedAt}) => {
+
             return (
                 <li key={id} className="py-12">
                   <article>
@@ -43,9 +43,9 @@ export default function Home({ posts }: {posts: WeblogPost[]}) {
                                 {title}
                               </Link>
                             </h2>
-                            <div className="flex flex-wrap">
-                              {tags.map((tag) => (
-                                  <Tag key={tag} text={tag} />
+                            <div className="flex flex-wrap pt-2.5">
+                              {tags.map(({id, name, color}) => (
+                                  <Tag key={id} text={name} color={color} />
                               ))}
                             </div>
                           </div>

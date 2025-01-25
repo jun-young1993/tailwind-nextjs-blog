@@ -7,6 +7,7 @@ import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import {getPosts, getTagsWithPostCount} from "../../../lib/weblog";
 
 export async function generateMetadata(props: {
   params: Promise<{ tag: string }>
@@ -35,15 +36,24 @@ export const generateStaticParams = async () => {
 }
 
 export default async function TagPage(props: { params: Promise<{ tag: string }> }) {
+
+
   const params = await props.params
-  const tag = decodeURI(params.tag)
-  // Capitalize first letter and convert space to dash
-  const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
-  const filteredPosts = allCoreContent(
-    sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
-  )
-  if (filteredPosts.length === 0) {
-    return notFound()
-  }
-  return <ListLayout posts={filteredPosts} title={title} />
+  console.log("=>(page.tsx:46) params.tag", params.tag);
+  await getPosts({
+    limit: 5,
+    page: 1,
+    tagId: params.tag
+  })
+  const posts = await getPosts({
+    limit: 5,
+    page: 1,
+  })
+
+  const tags = await getTagsWithPostCount()
+  return <ListLayout
+            posts={posts.data}
+            pagination={posts.pagination}
+            tags={tags}
+  />
 }

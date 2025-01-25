@@ -7,8 +7,8 @@ export const getRepositoryContent = `
   }
 `
 export const getPostsQuery = `
-    query GetPosts($limit: Float, $page: Float) {
-        getPosts(limit: $limit, page: $page) {
+    query GetPosts($limit: Float, $page: Float, $tagId: String) {
+        getPosts(limit: $limit, page: $page, tagId: $tagId) {
             pagination {       # 페이징 정보
                 total          # 총 데이터 개수
                 page           # 현재 페이지 번호
@@ -19,6 +19,11 @@ export const getPostsQuery = `
                 id
                 title
                 content
+                tags {
+                    id
+                    name
+                    color
+                }
                 createdAt
                 updatedAt
             }
@@ -32,6 +37,11 @@ export const getPostQuery = `
             id
             title
             content
+            tags {
+                id
+                name
+                color
+            }
             createdAt
             updatedAt
         }
