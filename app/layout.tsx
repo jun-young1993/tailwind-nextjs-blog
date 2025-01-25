@@ -12,6 +12,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import { Toaster } from 'react-hot-toast';
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -106,6 +107,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </SectionContainer>
         </ThemeProviders>
+        <Toaster
+            position={"top-right"}
+            toastOptions={{
+              // 성공 토스트 스타일
+              success: {
+                className: "bg-green-100 text-green-800 border border-green-300 rounded-lg shadow-lg",
+                iconTheme: {
+                  primary: "#22c55e", // 아이콘 색상
+                  secondary: "#e5f9e3", // 아이콘 배경색
+                },
+              },
+              // 에러 토스트 스타일
+              error: {
+                className: "bg-red-100 text-red-800 border border-red-300 rounded-lg shadow-lg",
+                iconTheme: {
+                  primary: "#ef4444", // 아이콘 색상
+                  secondary: "#fee2e2", // 아이콘 배경색
+                },
+              },
+              // 기본 토스트 스타일
+              className:
+                  "bg-white text-gray-800 border border-gray-300 rounded-lg shadow-md",
+            }}
+        />
       </body>
     </html>
   )

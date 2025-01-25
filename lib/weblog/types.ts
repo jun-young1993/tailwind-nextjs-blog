@@ -26,13 +26,15 @@ export type Tag = {
     name: string
     color: string
 }
-export type WeblogPost = {
+export type BasePost = {
     id: string
     title: string
     content: string
-    tags: Tag[]
     createdAt: string
     updatedAt: string
+}
+export interface WeblogPost extends BasePost{
+    tags: Tag[]
 }
 export type PaginationInfo = {
     total: number
@@ -68,4 +70,18 @@ export interface TagsWithPostCount extends Tag {
 }
 export type TagsWithPostCountOperation = {
     data: { getTagsWithPostCount: [TagsWithPostCount]},
+}
+export type PostTagsOperation = {
+    data: { getPostTags: [Tag]},
+}
+
+export type BasePostOperation = {
+    data: { createPost: Tag}
+    variables: {
+        input: {
+            tagIds: string[],
+            title: string,
+            content: string
+        }
+    }
 }

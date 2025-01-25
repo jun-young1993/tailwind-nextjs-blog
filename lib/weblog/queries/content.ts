@@ -59,6 +59,31 @@ export const getTagsWithPostCountQuery = `
     }
 `
 
+export const getPostTagsQuery = `
+    query {
+          getPostTags {
+            id
+            name
+            color
+        }
+    }
+`
+
+export const createPostMutation = `
+mutation CreatePost($input: CreatePostInputModel!) {
+  createPost(input: $input) {
+    id
+    title
+    content
+    tags {
+      id
+      name
+      color
+    }
+  }
+}
+`
+
 export const getLatestCommits = `
     query GetCommits($repository: String!, $path: String!) {
         getCommits(repository: $repository, path: $path) {

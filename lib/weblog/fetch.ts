@@ -1,13 +1,16 @@
 import { ApolloClient } from "@apollo/client"
 import {
+    createPostMutation,
     getLatestCommits,
     getPostQuery,
-    getPostsQuery,
+    getPostsQuery, getPostTagsQuery,
     getRepositoryContent,
     getTagsWithPostCountQuery
 } from "./queries/content"
 import { isWeblogError } from "./type-guards"
 import {
+    BasePostOperation,
+    PostTagsOperation,
     TagsWithPostCount,
     TagsWithPostCountOperation,
     WebLogCommitOperation,
@@ -20,9 +23,8 @@ import {
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
-const endpoint = 'http://localhost:3000/graphql/post'
-const repository = 'Obsidian'
-const path = 'blog'
+export const endpoint = 'http://localhost:3000/graphql/post'
+
 
 
 export async function weblogFetch<T>({
@@ -104,5 +106,24 @@ export async function getTagsWithPostCount(): Promise<TagsWithPostCountOperation
     })
 
     return response.body.data.getTagsWithPostCount
+}
+
+export async function getPostTags(): Promise<PostTagsOperation['data']['getPostTags']> {
+    const response = await weblogFetch<PostTagsOperation>({
+        query: getPostTagsQuery,
+        cache: 'no-store',
+    })
+
+    return response.body.data.getPostTags
+}
+
+export async function createPost(variables: BasePostOperation['variables']): Promise<BasePostOperation['data']['createPost']> {
+    const response = await weblogFetch<BasePostOperation>({
+        query: createPostMutation,
+        cache: 'no-store',
+        variables:variables
+    })
+
+    return response.body.data.createPost
 }
 

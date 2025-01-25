@@ -1,18 +1,17 @@
-import Link from 'next/link'
-import { slug } from 'github-slugger'
+import Link from 'next/link';
+import { slug } from 'github-slugger';
+
 interface Props {
-  id: string
-  text: string
-  color: string
-  opacity?: number
+  id: string;
+  text: string;
+  color: string;
+  opacity?: number;
+  onClick?: (id: string, text: string, color: string) => void;
 }
 
-const Tag = ({ id, text, color = '#ffffff', opacity = 20 }: Props) => {
-
-
+const Tag = ({ id, text, color = '#ffffff', opacity = 20, onClick }: Props) => {
   // 배경색을 투명하게 처리하는 함수
-  const rgbaColor = (hex, opacity) => {
-
+  const rgbaColor = (hex: string, opacity: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -22,21 +21,45 @@ const Tag = ({ id, text, color = '#ffffff', opacity = 20 }: Props) => {
   const styles = {
     backgroundColor: rgbaColor(color, opacity), // 배경색을 흐리게
     color: color, // 글자 색상은 그대로
-    fontWeight: "bold",
-    borderRadius: "8px",
-    padding: "4px 8px",
-    display: "inline-block",
+    fontWeight: 'bold',
+    borderRadius: '8px',
+    padding: '4px 8px',
+    display: 'inline-block',
+  };
+
+  const handleClick = (
+      e: React.MouseEvent<HTMLDivElement>,
+      id: string,
+      text: string,
+      color: string
+  ) => {
+    if (onClick) {
+      e.preventDefault(); // `onClick`이 있으면 기본 이동 동작 방지
+      onClick(id, text, color); // `onClick` 함수 실행
+    }
   };
 
   return (
-    <Link
-        className={`text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm hover:brightness-50`}
-        style={styles}
-      href={`/tags/${id}`}
-    >
-        {text}
-    </Link>
-  )
-}
+      <>
+        {onClick ? (
+            <div
+                className="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm hover:brightness-50 cursor-pointer"
+                style={styles}
+                onClick={(event) => handleClick(event, id, text, color)}
+            >
+              {text}
+            </div>
+        ) : (
+            <Link
+                className="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm hover:brightness-50"
+                style={styles}
+                href={`/tags/${id}`}
+            >
+              {text}
+            </Link>
+        )}
+      </>
+  );
+};
 
-export default Tag
+export default Tag;
