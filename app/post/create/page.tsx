@@ -30,13 +30,10 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        // 비동기 함수 호출
-        const fetchTags = async () => {
-            const fetchedTags = await getPostTags(); // 태그 데이터 가져오기
-            setTags(fetchedTags); // 상태 업데이트
-        };
-
-        fetchTags();
+        getPostTags()
+            .then((fetchTags) => {
+                setTags(fetchTags)
+            })
     }, []); // 빈 배열로 초기 렌더 시 한 번만 호출
     const validate = () => {
 

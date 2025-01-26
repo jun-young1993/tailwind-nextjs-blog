@@ -45,7 +45,7 @@ export default function Home({ posts }: {posts: WeblogPost[]}) {
                             </h2>
                             <div className="flex flex-wrap pt-2.5">
                               {tags.map(({id, name, color}) => (
-                                  <Tag key={id} text={name} color={color} />
+                                  <Tag tagId={id} key={id} text={name} color={color} />
                               ))}
                             </div>
                           </div>

@@ -2,14 +2,15 @@ import Link from 'next/link';
 import { slug } from 'github-slugger';
 
 interface Props {
-  id: string;
+  tagId: string;
   text: string;
   color: string;
   opacity?: number;
   onClick?: (id: string, text: string, color: string) => void;
 }
 
-const Tag = ({ id, text, color = '#ffffff', opacity = 20, onClick }: Props) => {
+const Tag = ({ tagId, text, color = '#ffffff', opacity = 20, onClick }: Props) => {
+
   // 배경색을 투명하게 처리하는 함수
   const rgbaColor = (hex: string, opacity: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -19,7 +20,7 @@ const Tag = ({ id, text, color = '#ffffff', opacity = 20, onClick }: Props) => {
   };
 
   const styles = {
-    backgroundColor: rgbaColor(color, opacity), // 배경색을 흐리게
+    backgroundColor: rgbaColor(color, opacity || 20), // 배경색을 흐리게
     color: color, // 글자 색상은 그대로
     fontWeight: 'bold',
     borderRadius: '8px',
@@ -45,7 +46,7 @@ const Tag = ({ id, text, color = '#ffffff', opacity = 20, onClick }: Props) => {
             <div
                 className="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm hover:brightness-50 cursor-pointer"
                 style={styles}
-                onClick={(event) => handleClick(event, id, text, color)}
+                onClick={(event) => handleClick(event, tagId, text, color)}
             >
               {text}
             </div>
@@ -53,7 +54,7 @@ const Tag = ({ id, text, color = '#ffffff', opacity = 20, onClick }: Props) => {
             <Link
                 className="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm hover:brightness-50"
                 style={styles}
-                href={`/tags/${id}`}
+                href={`/tags/${tagId}`}
             >
               {text}
             </Link>

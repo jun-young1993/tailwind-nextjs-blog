@@ -1,12 +1,8 @@
-import { slug } from 'github-slugger'
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayoutWithTags'
-import { allBlogs } from 'contentlayer/generated'
 import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import {getPosts, getTagsWithPostCount} from "../../../lib/weblog";
 
 export async function generateMetadata(props: {
@@ -39,7 +35,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
 
 
   const params = await props.params
-  console.log("=>(page.tsx:46) params.tag", params.tag);
+
   await getPosts({
     limit: 5,
     page: 1,
@@ -51,6 +47,7 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
   })
 
   const tags = await getTagsWithPostCount()
+
   return <ListLayout
             posts={posts.data}
             pagination={posts.pagination}

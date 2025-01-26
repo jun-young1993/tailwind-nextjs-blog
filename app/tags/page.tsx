@@ -26,7 +26,7 @@ export default async function Page() {
           {tags.map(({id, name, postCount, color}) => {
             return (
               <div key={id} className="mb-2 mr-5 mt-2">
-                <Tag id={id} text={name} color={color}/>
+                <Tag tagId={id} text={name} color={color}/>
                 <Link
                   href={`/tags/${id}`}
                   className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"

@@ -67,7 +67,7 @@ export default function ListLayoutWithTags({
   pagination,
 }: ListLayoutProps) {
   const pathname = usePathname()
-console.log("=>(ListLayoutWithTags.tsx:72) pathname", pathname);
+
   return (
     <>
       <div>
@@ -130,7 +130,7 @@ console.log("=>(ListLayoutWithTags.tsx:72) pathname", pathname);
                             </Link>
                           </h2>
                           <div className="flex flex-wrap py-2.5">
-                            {tags?.map(({id, name, color}) => <Tag key={id} text={name} color={color} />)}
+                            {tags?.map((tag) => <Tag tagId={tag.id} key={tag.id} text={tag.name} color={tag.color} />)}
                           </div>
                         </div>
                         <div className="prose max-w-none text-gray-500 dark:text-gray-400 line-clamp-3">
