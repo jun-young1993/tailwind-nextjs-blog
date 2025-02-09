@@ -14,7 +14,13 @@ import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import { Toaster } from 'react-hot-toast';
 import {getMe} from "../lib/weblog";
-import {cookies} from "next/headers";
+import {cookies, headers} from "next/headers";
+import FloatingActionUserButton from "@/components/FloatingActionUserButton";
+import LoginIcon from "@/components/icons/login.icon";
+import Link from "next/link";
+import PlusIcon from "@/components/icons/plus.icon";
+import BlogWriteIcon from "@/components/icons/blog-write.icon";
+
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -64,13 +70,14 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({children}: { children: React.ReactNode }) {
     const cookieStore = await cookies()
+
     const token = cookieStore.get("Authorization")
 
     let user = null;
     if(token !== undefined && token.value){
         user = await getMe(token.value);
     }
-console.log("=>(layout.tsx:74) user", user);
+
   const basePath = process.env.BASE_PATH || ''
 
 
@@ -114,6 +121,21 @@ console.log("=>(layout.tsx:74) user", user);
           <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
             <Header/>
             <main className="mb-auto">{children}</main>
+            <FloatingActionUserButton
+                items={[
+                    <Link href={'/post/create'}>
+                        <BlogWriteIcon
+                            className={"w-5 h-5"}
+                        />
+                    </Link>
+                ]}
+            >
+                {
+                    user
+                    ? <PlusIcon />
+                    : <Link href={'/login'} ><LoginIcon className={"w-5 h-5"}/></Link>
+                }
+            </FloatingActionUserButton>
           </SearchProvider>
           <Footer/>
         </SectionContainer>
