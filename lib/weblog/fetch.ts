@@ -1,25 +1,20 @@
-import { ApolloClient } from "@apollo/client"
 import {
     createPostMutation,
-    getLatestCommits,
     getPostQuery,
     getPostsQuery, getPostTagsQuery,
-    getRepositoryContent,
-    getTagsWithPostCountQuery
+    getTagsWithPostCountQuery, loginMutation, meQuery
 } from "./queries/content"
 import { isWeblogError } from "./type-guards"
 import {
-    BasePostOperation,
+    BasePostOperation, LoginOperation, MeOperation,
     PostTagsOperation,
-    TagsWithPostCount,
     TagsWithPostCountOperation,
-    WebLogCommitOperation,
-    WeblogFiles,
     WeblogPost,
     WebLogPostOperation,
     WeblogPosts,
     WebLogPostsOperation
 } from "./types"
+
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
@@ -35,26 +30,26 @@ export async function weblogFetch<T>({
   variables,
 }: {
   cache?: RequestCache
-  headers?: HeadersInit
+  headers?: RequestInit['headers']
   query: string
   tags?: string[]
   variables?: ExtractVariables<T>
 }): Promise<{ status: number; body: T } | never> {
   try {
+
     const result = await fetch(endpoint,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...headers
+            ...headers
         },
         body: JSON.stringify({
-          ...(query && { query }),
-          variables: {
-            ...(variables && variables)
-          }
+          query,
+          variables: variables ?? {}
         }),
         cache,
-        ...(tags && { next: { tags } })
+        ...(tags && { next: { tags } }),
+        credentials: "include"
     })
     const body = await result.json();
 
@@ -125,5 +120,31 @@ export async function createPost(variables: BasePostOperation['variables']): Pro
     })
 
     return response.body.data.createPost
+}
+
+export async function login(variables: LoginOperation['variables']): Promise<LoginOperation['data']['login']> {
+    const response = await weblogFetch<LoginOperation>({
+        query: loginMutation,
+        cache: 'no-store',
+        variables:variables
+    });
+    return response.body.data.login
+}
+
+export async function getMe(token: string): Promise<MeOperation['data']['me'] | null> {
+    try{
+        const response = await weblogFetch<MeOperation>({
+            query: meQuery,
+            cache: 'no-store',
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+
+        return response.body.data.me
+    }catch(e){
+        return null
+    }
+
 }
 

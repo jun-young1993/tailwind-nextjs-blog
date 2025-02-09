@@ -84,6 +84,25 @@ mutation CreatePost($input: CreatePostInputModel!) {
 }
 `
 
+export const loginMutation = `
+    mutation Login($input: LoginInputModel!) {
+      login(input: $input) {
+        accessToken
+      }
+    }
+`
+
+export const meQuery = `
+    query {
+      me {
+        id
+        username
+        email
+        createdAt
+      }
+    }
+`
+
 export const getLatestCommits = `
     query GetCommits($repository: String!, $path: String!) {
         getCommits(repository: $repository, path: $path) {

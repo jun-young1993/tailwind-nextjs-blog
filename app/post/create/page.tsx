@@ -70,7 +70,7 @@ export default function Page() {
                 {
                     loading: "Creating your blog post... Please wait.",
                     success: "Blog post created successfully!",
-                    error: (error) => error.toString(),
+                    error: (error) => error.message
                 }
             )
             .then(({id}) => {

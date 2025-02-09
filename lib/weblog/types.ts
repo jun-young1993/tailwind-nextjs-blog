@@ -85,3 +85,24 @@ export type BasePostOperation = {
         }
     }
 }
+export type Login = {
+    accessToken: string
+}
+export type LoginOperation = {
+    data: { login: Login}
+    variables: {
+        input: {
+            email: string,
+            password: string
+        }
+    }
+}
+export type User = {
+    id: string
+    username: string
+    email: string
+    createdAt: Date
+}
+export type MeOperation = {
+    data: { me: User }
+}
