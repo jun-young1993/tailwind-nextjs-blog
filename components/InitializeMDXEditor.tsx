@@ -20,6 +20,7 @@ import {
   markdownShortcutPlugin,
   SandpackConfig,
   MDXEditor,
+  MDXEditorMethods,
 } from '@mdxeditor/editor'
 import { forwardRef } from 'react'
 
@@ -77,7 +78,7 @@ type Props = { markdown: string }
  * @return {JSX.Element}
  * @constructor
  */
-const InitializeMDXEditor = forwardRef<HTMLDivElement, Props>(({ markdown }, ref) => {
+const InitializeMDXEditor = forwardRef<MDXEditorMethods, Props>(({ markdown }, ref) => {
   return (
     <MDXEditor
       ref={ref}
@@ -88,4 +89,5 @@ const InitializeMDXEditor = forwardRef<HTMLDivElement, Props>(({ markdown }, ref
     />
   )
 })
+InitializeMDXEditor.displayName = 'InitializeMDXEditor'
 export default InitializeMDXEditor
