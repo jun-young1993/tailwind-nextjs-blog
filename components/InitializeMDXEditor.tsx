@@ -80,7 +80,7 @@ const InitializeMDXEditor = forwardRef<HTMLDivElement, Props>(({ markdown }, ref
         <MDXEditor
             ref={ref}
             markdown={markdown}
-            className="full-demo-mdxeditor"
+            className="full-demo-mdxeditor dark:bg-white"
             contentEditableClassName="prose max-w-full font-sans"
             plugins={allPlugins(markdown)}
         />

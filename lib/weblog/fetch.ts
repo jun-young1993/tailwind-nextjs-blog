@@ -18,7 +18,7 @@ import {
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never
 
-export const endpoint = 'http://localhost:3000/graphql/post'
+export const endpoint = `${process.env.API_URL}/graphql/post`
 
 
 

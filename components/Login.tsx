@@ -43,7 +43,7 @@ const Login = () => {
         )
             .then(async (result) => {
                 router.push(`/`)
-
+                router.refresh()
             })
 
     };

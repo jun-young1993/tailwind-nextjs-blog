@@ -20,6 +20,7 @@ import LoginIcon from "@/components/icons/login.icon";
 import Link from "next/link";
 import PlusIcon from "@/components/icons/plus.icon";
 import BlogWriteIcon from "@/components/icons/blog-write.icon";
+import { MeOperation } from 'lib/weblog/types'
 
 
 const space_grotesk = Space_Grotesk({
@@ -73,7 +74,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
 
     const token = cookieStore.get("Authorization")
 
-    let user = null;
+    let user:MeOperation["data"]["me"] | null = null;
     if(token !== undefined && token.value){
         user = await getMe(token.value);
     }
@@ -125,7 +126,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
                 items={[
                     <Link href={'/post/create'}>
                         <BlogWriteIcon
-                            className={"w-5 h-5"}
+                            className="w-5 h-5"
                         />
                     </Link>
                 ]}

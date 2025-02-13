@@ -1,14 +1,20 @@
 "use client"
-import {ReactNode} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {usePathname} from "next/navigation";
+import {cookies, headers} from "next/headers";
+import { MeOperation } from "lib/weblog/types";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 type Props  = {
     items: ReactNode[]
     children: ReactNode
 }
 const FloatingActionUserButton = ({ children, items }: Props) => {
+    
     const pathname = usePathname();
     const isIgnoreFloatingActionButton = pathname === "/post/create";
+
+    
     return (
             <div className={`group fixed bottom-8 right-8 p-2 flex items-end justify-end w-24 h-24 ${isIgnoreFloatingActionButton && 'hidden'}`}>
                 {/* 메인 버튼 */}
