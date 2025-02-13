@@ -1,3 +1,5 @@
+import {string} from "zod";
+
 export type WeblogFiles = {
     name: string
     path: string
@@ -19,18 +21,40 @@ export type WeblogCommit = {
 export type WebLogCommitOperation = {
     data: { getCommits: WeblogCommit[] }
 }
-export type WeblogPost = {
+
+export type Tag = {
     id: string
-    content: string
+    name: string
+    color: string
+}
+export type BasePost = {
+    id: string
     title: string
+    content: string
     createdAt: string
     updatedAt: string
 }
-
+export interface WeblogPost extends BasePost{
+    tags: Tag[]
+}
+export type PaginationInfo = {
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+}
+export type WeblogPosts = {
+    data: WeblogPost[],
+    pagination: PaginationInfo
+}
 export type WebLogPostsOperation = {
-    data: { getPosts: WeblogPost[] }
+    data: {
+        getPosts: WeblogPosts
+    }
     variables: {
         limit?: number
+        page?: number
+        tagId?: string
     }
 }
 
@@ -39,4 +63,47 @@ export type WebLogPostOperation = {
     variables: {
         id: string
     }
+}
+
+
+export interface TagsWithPostCount extends Tag {
+    postCount: number
+}
+export type TagsWithPostCountOperation = {
+    data: { getTagsWithPostCount: [TagsWithPostCount]},
+}
+export type PostTagsOperation = {
+    data: { getPostTags: [Tag]},
+}
+
+export type BasePostOperation = {
+    data: { createPost: Tag}
+    variables: {
+        input: {
+            tagIds: string[],
+            title: string,
+            content: string
+        }
+    }
+}
+export type Login = {
+    accessToken: string
+}
+export type LoginOperation = {
+    data: { login: Login}
+    variables: {
+        input: {
+            email: string,
+            password: string
+        }
+    }
+}
+export type User = {
+    id: string
+    username: string
+    email: string
+    createdAt: Date
+}
+export type MeOperation = {
+    data: { me: User }
 }

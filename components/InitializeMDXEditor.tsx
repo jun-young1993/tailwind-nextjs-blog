@@ -21,6 +21,7 @@ import {
     SandpackConfig,
     MDXEditor,
 } from '@mdxeditor/editor'
+import {forwardRef} from "react";
 
 const defaultSnippetContent = `
 export default function App() {
@@ -67,20 +68,22 @@ const allPlugins = (diffMarkdown: string) => [
     diffSourcePlugin({ viewMode: 'rich-text', diffMarkdown }),
     markdownShortcutPlugin(),
 ]
-
+type Props = { markdown: string }
 /**
  * @url https://github.com/mdx-editor/site/blob/master/app/DemoEditor.tsx
  * @param {string} markdown
  * @return {JSX.Element}
  * @constructor
  */
-export default function InitializeMDXEditor({ markdown }: { markdown: string }) {
+const InitializeMDXEditor = forwardRef<HTMLDivElement, Props>(({ markdown }, ref) => {
     return (
         <MDXEditor
+            ref={ref}
             markdown={markdown}
             className="full-demo-mdxeditor"
             contentEditableClassName="prose max-w-full font-sans"
             plugins={allPlugins(markdown)}
         />
     )
-}
+})
+export default  InitializeMDXEditor;
