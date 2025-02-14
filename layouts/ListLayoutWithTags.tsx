@@ -6,11 +6,11 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { WeblogPosts, TagsWithPostCount } from '../lib/weblog/types'
-import { MDXRemote } from 'next-mdx-remote/rsc'
+import MDXRenderer from '@/components/MDXRenderer'
 
 interface PaginationProps {
   totalPages: number
-  currentPage: number
+  page: number
 }
 interface ListLayoutProps {
   posts: WeblogPosts['data']
@@ -19,11 +19,11 @@ interface ListLayoutProps {
   pagination?: WeblogPosts['pagination']
 }
 
-function Pagination({ totalPages, currentPage }: PaginationProps) {
+function Pagination({ totalPages, page }: PaginationProps) {
   const pathname = usePathname()
   const basePath = pathname.split('/')[1]
-  const prevPage = currentPage - 1 > 0
-  const nextPage = currentPage + 1 <= totalPages
+  const prevPage = page - 1 > 0
+  const nextPage = page + 1 <= totalPages
 
   return (
     <div className="space-y-2 pb-8 pt-6 md:space-y-5">
@@ -35,14 +35,14 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
         )}
         {prevPage && (
           <Link
-            href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
+            href={page - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${page - 1}`}
             rel="prev"
           >
             Previous
           </Link>
         )}
         <span>
-          {currentPage} of {totalPages}
+          {page} of {totalPages}
         </span>
         {!nextPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
@@ -50,7 +50,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
           </button>
         )}
         {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
+          <Link href={`/${basePath}/page/${page + 1}`} rel="next">
             Next
           </Link>
         )}
@@ -61,7 +61,6 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
 export default function ListLayoutWithTags({ posts, title, tags, pagination }: ListLayoutProps) {
   const pathname = usePathname()
-
   return (
     <>
       <div>
@@ -129,7 +128,7 @@ export default function ListLayoutWithTags({ posts, title, tags, pagination }: L
                           </div>
                         </div>
                         <div className="prose line-clamp-3 max-w-none text-gray-500 dark:text-gray-400">
-                          <MDXRemote source={content} />
+                          <MDXRenderer content={content} />
                         </div>
                       </div>
                     </article>
@@ -138,7 +137,7 @@ export default function ListLayoutWithTags({ posts, title, tags, pagination }: L
               })}
             </ul>
             {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+              <Pagination page={pagination.page} totalPages={pagination.totalPages} />
             )}
           </div>
         </div>
