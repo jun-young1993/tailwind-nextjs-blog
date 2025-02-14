@@ -1,5 +1,7 @@
+import { MouseEventHandler } from 'react'
+
 type Props = {
-  onAdd: (event: MouseEvent) => void
+  onAdd: (event?: MouseEvent | MouseEventHandler<HTMLDivElement>) => void
 }
 const FloatingActionButton = ({ onAdd }: Props) => {
   return (
@@ -8,6 +10,7 @@ const FloatingActionButton = ({ onAdd }: Props) => {
       <input type="checkbox" id="fab-toggle" className="peer hidden" />
       <label
         htmlFor="fab-toggle"
+        aria-label="Toggle FAB"
         className="absolute z-50 flex cursor-pointer items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 p-3 text-white shadow-xl transition-transform peer-checked:rotate-45"
       >
         <svg
@@ -60,8 +63,15 @@ const FloatingActionButton = ({ onAdd }: Props) => {
 
       {/* 서브 버튼 3 */}
       <div
+        role="button"
+        tabIndex={0}
         className="absolute flex scale-0 rounded-full bg-yellow-300 p-2 text-white transition-all duration-300 ease-out hover:bg-yellow-400 hover:p-3 peer-checked:-translate-x-14 peer-checked:-translate-y-14 peer-checked:scale-100"
         onClick={() => onAdd()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            onAdd()
+          }
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
